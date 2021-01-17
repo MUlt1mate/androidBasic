@@ -29,8 +29,8 @@
                     android:id="@+id/posterImage1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/batman6_23s"
-                    android:contentDescription="@string/posterDescription" />
+                    android:contentDescription="@string/posterDescription"
+                    app:srcCompat="@drawable/batman6_23s" />
 
                 <LinearLayout
                     android:id="@+id/movieInfo1"
@@ -52,6 +52,7 @@
                         android:id="@+id/movieButton1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:tag="movieDetailBtn"
                         android:text="@string/details" />
                 </LinearLayout>
             </LinearLayout>

@@ -6,46 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".MovieDescription">
 
-    <LinearLayout
-        android:id="@+id/movieDetails"
+    <ScrollView
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/posterImage2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/posterDescription"
-            app:srcCompat="@drawable/batman6_23s" />
-
-
-        <TextView
-            android:id="@+id/movieTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="@string/darkKnightTitle"
-            android:textStyle="bold"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/movieDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="20"
-            android:text="@string/darkKnightDescription"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/button"
+        <LinearLayout
+            android:id="@+id/movieDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            android:text="@string/share" />
+            <ImageView
+                android:id="@+id/detailsPoster"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/posterDescription"
+                app:srcCompat="@drawable/furious9_12s" />
 
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/movieTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                tools:text="@tools:sample/lorem" />
+
+            <TextView
+                android:id="@+id/movieDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="20"
+                android:textSize="20sp"
+                tools:text="@tools:sample/lorem/random" />
+
+            <Button
+                android:id="@+id/shareBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/share" />
+
+
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
