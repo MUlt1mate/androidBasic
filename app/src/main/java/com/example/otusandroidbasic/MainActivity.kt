@@ -1,5 +1,6 @@
 package com.example.otusandroidbasic
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
+    private val requestCodeDescription = 1
 
     companion object {
         const val SELECTED_TITLE = "SELECTED_TITLE"
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra(SELECTED_TITLE, titleId)
             Intent(this, MovieDescription::class.java).apply {
                 putExtra(MovieDescription.MOVIE_DATA, data)
-                startActivity(this)
+                startActivityForResult(this, requestCodeDescription)
             }
         }
 
@@ -73,6 +75,17 @@ class MainActivity : AppCompatActivity() {
                     "@string/furious9Description"
                 ), "@posterTitle3"
             )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == requestCodeDescription && resultCode == Activity.RESULT_OK) {
+            Log.i(tag, "received description result")
+            data?.getParcelableExtra<FeedbackData>(MovieDescription.FEEDBACK_DATA)?.let {
+                Log.i(tag, "received comment ${it.comment}")
+                Log.i(tag, "like ${it.like}")
+            }
         }
     }
 }

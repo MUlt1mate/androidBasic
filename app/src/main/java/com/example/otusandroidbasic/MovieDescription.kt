@@ -1,10 +1,12 @@
 package com.example.otusandroidbasic
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.ShareActionProvider
 import android.widget.TextView
@@ -14,6 +16,7 @@ class MovieDescription : AppCompatActivity() {
 
     companion object {
         const val MOVIE_DATA = "MOVIE_DATA"
+        const val FEEDBACK_DATA = "FEEDBACK_DATA"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +39,19 @@ class MovieDescription : AppCompatActivity() {
             findViewById<TextView>(R.id.movieDescription).setText(getResourceById(it.description))
             findViewById<ImageView>(R.id.detailsPoster).setImageResource(getResourceById(it.img))
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(Activity.RESULT_OK, Intent().apply {
+            Log.i(tag, "setting result")
+            putExtra(
+                FEEDBACK_DATA, FeedbackData(
+                    findViewById<TextView>(R.id.commentText).text.toString(),
+                    findViewById<CheckBox>(R.id.likeCheckbox).isChecked
+                )
+            )
+        })
+        super.onBackPressed()
     }
 }
 
