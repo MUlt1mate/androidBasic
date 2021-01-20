@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
-import android.widget.ShareActionProvider
 import android.widget.TextView
 
 class MovieDescription : AppCompatActivity() {
@@ -24,20 +23,27 @@ class MovieDescription : AppCompatActivity() {
         setContentView(R.layout.activity_movie_description)
         Log.i(tag, "created")
 
-        findViewById<View>(R.id.shareBtn).setOnClickListener {
-            Log.i(tag, "clicked share")
-            val intent = Intent(this, ShareActionProvider::class.java)
-            startActivity(intent)
-        }
-
         intent.getParcelableExtra<MovieData>(MOVIE_DATA)?.let {
             Log.i(tag, "received movie data ${it.title}")
             fun getResourceById(name: String) =
                 this.resources.getIdentifier(name, "id", this.packageName)
 
-            findViewById<TextView>(R.id.movieTitle).setText(getResourceById(it.title))
+            val title = getResourceById(it.title)
+            findViewById<TextView>(R.id.movieTitle).setText(title)
             findViewById<TextView>(R.id.movieDescription).setText(getResourceById(it.description))
             findViewById<ImageView>(R.id.detailsPoster).setImageResource(getResourceById(it.img))
+
+            findViewById<View>(R.id.shareBtn).setOnClickListener {
+                Log.i(tag, "clicked share")
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "Check out ${getString(title)} in my app")
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
         }
     }
 
