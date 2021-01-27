@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/movieList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/movie1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/posterImage1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/posterDescription"
+                    app:srcCompat="@drawable/batman6_23s" />
+
+                <TextView
+                    android:id="@+id/posterTitle1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/posterImage1"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="@string/darkKnightTitle"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/movieButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/posterImage1"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/posterImage1"
+                    android:text="@string/details" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/movie2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/posterImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/posterDescription"
+                    app:srcCompat="@drawable/quietplace2_10s" />
+
+                <TextView
+                    android:id="@+id/posterTitle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/posterImage2"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="@string/quietPlaceTitle"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/movieButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/posterImage2"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/posterImage2"
+                    android:text="@string/details" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/movie3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/posterImage3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/posterDescription"
+                    app:srcCompat="@drawable/furious9_12s" />
+
+                <TextView
+                    android:id="@+id/posterTitle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/posterImage3"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:text="@string/furious9Title"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/movieButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/posterImage3"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/posterImage3"
+                    android:text="@string/details" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
