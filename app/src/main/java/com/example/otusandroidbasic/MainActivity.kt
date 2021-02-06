@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = MovieAdapter(listOf())
+        recyclerView.adapter = MovieAdapter(MovieRepository().getAll())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
