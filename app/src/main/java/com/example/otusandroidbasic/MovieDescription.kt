@@ -15,7 +15,6 @@ class MovieDescription : AppCompatActivity() {
 
     companion object {
         const val MOVIE_DATA = "MOVIE_DATA"
-        const val FEEDBACK_DATA = "FEEDBACK_DATA"
     }
 
     // ищет ресурс по имени
@@ -49,19 +48,6 @@ class MovieDescription : AppCompatActivity() {
 
             startActivity(Intent.createChooser(sendIntent, null))
         }
-    }
-
-    override fun onBackPressed() {
-        setResult(Activity.RESULT_OK, Intent().apply {
-            Log.i(tag, "setting result")
-            putExtra(
-                FEEDBACK_DATA, FeedbackData(
-                    findViewById<TextView>(R.id.commentText).text.toString(),
-                    findViewById<CheckBox>(R.id.likeCheckbox).isChecked
-                )
-            )
-        })
-        super.onBackPressed()
     }
 }
 
