@@ -23,7 +23,7 @@
                 android:id="@+id/detailsPoster"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/posterDescription"
+                tools:ignore="ContentDescription"
                 app:srcCompat="@drawable/furious9_12s" />
 
 

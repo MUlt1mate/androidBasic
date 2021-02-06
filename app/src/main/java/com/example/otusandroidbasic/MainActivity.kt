@@ -1,16 +1,15 @@
 package com.example.otusandroidbasic
 
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
-
+    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.movieList) }
+/*
     companion object {
         const val SELECTED_TITLE = "SELECTED_TITLE"
         const val SELECTED_TITLE_COLOR = "#B33C3C"
@@ -40,13 +39,22 @@ class MainActivity : AppCompatActivity() {
             startActivity(this)
         }
     }
+*/
+
+    private fun initRecycler() {
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = MovieAdapter(listOf())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Log.i(tag, "created")
 
-        intent.getStringExtra(SELECTED_TITLE)?.let {
+        initRecycler()
+
+        /*intent.getStringExtra(SELECTED_TITLE)?.let {
             Log.i(tag, "found selected title: $it")
             setTextColor(it, SELECTED_TITLE_COLOR)
         }
@@ -77,6 +85,6 @@ class MainActivity : AppCompatActivity() {
                     "@string/furious9Description"
                 ), "@posterTitle3"
             )
-        }
+        }*/
     }
 }

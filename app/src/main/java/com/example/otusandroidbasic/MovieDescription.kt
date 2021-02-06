@@ -1,14 +1,8 @@
 package com.example.otusandroidbasic
 
-import android.app.Activity
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class MovieDescription : AppCompatActivity() {
     private val tag = "MovieDescription"
@@ -33,12 +27,12 @@ class MovieDescription : AppCompatActivity() {
         }
         Log.i(tag, "received movie data ${it.title}")
 
-        val title = getResourceById(it.title)
-        findViewById<TextView>(R.id.movieTitle).setText(title)
-        findViewById<TextView>(R.id.movieDescription).setText(getResourceById(it.description))
-        findViewById<ImageView>(R.id.detailsPoster).setImageResource(getResourceById(it.img))
+//        val title = getResourceById(it.title)
+//        findViewById<TextView>(R.id.movieTitle).setText(title)
+//        findViewById<TextView>(R.id.movieDescription).setText(getResourceById(it.description))
+//        findViewById<ImageView>(R.id.detailsPoster).setImageResource(getResourceById(it.img))
 
-        findViewById<View>(R.id.shareBtn).setOnClickListener {
+        /*findViewById<View>(R.id.shareBtn).setOnClickListener {
             Log.i(tag, "clicked share")
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -47,7 +41,7 @@ class MovieDescription : AppCompatActivity() {
             }
 
             startActivity(Intent.createChooser(sendIntent, null))
-        }
+        }*/
     }
 }
 
