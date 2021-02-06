@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 class MovieVH(movieItemView: View) : RecyclerView.ViewHolder(movieItemView) {
     private val titleTv: TextView = movieItemView.findViewById(R.id.posterTitle)
     private val image: ImageView = movieItemView.findViewById(R.id.posterImage)
+    val detailsButton: TextView = movieItemView.findViewById(R.id.movieButton)
 
     fun bind(item: MovieData) {
         titleTv.setText(item.title)

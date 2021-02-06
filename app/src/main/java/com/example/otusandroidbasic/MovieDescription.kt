@@ -2,6 +2,8 @@ package com.example.otusandroidbasic
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class MovieDescription : AppCompatActivity() {
@@ -11,9 +13,6 @@ class MovieDescription : AppCompatActivity() {
         const val MOVIE_DATA = "MOVIE_DATA"
     }
 
-    // ищет ресурс по имени
-    private fun getResourceById(name: String) =
-        this.resources.getIdentifier(name, "id", this.packageName)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +26,9 @@ class MovieDescription : AppCompatActivity() {
         }
         Log.i(tag, "received movie data ${it.title}")
 
-//        val title = getResourceById(it.title)
-//        findViewById<TextView>(R.id.movieTitle).setText(title)
-//        findViewById<TextView>(R.id.movieDescription).setText(getResourceById(it.description))
-//        findViewById<ImageView>(R.id.detailsPoster).setImageResource(getResourceById(it.img))
+        findViewById<TextView>(R.id.movieTitle).setText(it.title)
+        findViewById<TextView>(R.id.movieDescription).setText(it.description)
+        findViewById<ImageView>(R.id.detailsPoster).setImageResource(it.img)
 
         /*findViewById<View>(R.id.shareBtn).setOnClickListener {
             Log.i(tag, "clicked share")
