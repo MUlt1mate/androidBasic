@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -43,6 +45,19 @@ class MainActivity : AppCompatActivity() {
                         recyclerView.adapter?.notifyItemChanged(position)
                     }
                 })
+        addDecorations(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
+    }
+
+    private fun addDecorations(isVertical: Boolean) {
+        val orientation: Int = if (isVertical) {
+            DividerItemDecoration.VERTICAL
+        } else {
+            DividerItemDecoration.HORIZONTAL
+        }
+
+        val itemDecoration = DividerItemDecoration(this, orientation)
+        itemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_list)!!)
+        recyclerView.addItemDecoration(itemDecoration)
     }
 
     override fun onBackPressed() {
