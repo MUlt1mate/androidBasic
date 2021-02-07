@@ -1,6 +1,7 @@
 package com.example.otusandroidbasic
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecycler() {
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val orientation = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> LinearLayoutManager.HORIZONTAL
+            else -> LinearLayoutManager.VERTICAL
+        }
+        val layoutManager = LinearLayoutManager(this, orientation, false)
         recyclerView.layoutManager = layoutManager
 
         recyclerView.adapter =
