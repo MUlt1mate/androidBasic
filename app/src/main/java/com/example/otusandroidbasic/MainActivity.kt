@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,22 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.movieList) }
-    private val movieRepository = MovieRepository()
-
-    companion object {
-        const val EXTRA_FAVORITES = "EXTRA_FAVORITES"
-    }
-
-    // обработка выбора фильма из списка
-    private fun showDetail(data: MovieData) {
-        Log.i(tag, "click on movie ${data.title}")
-
-        // открываем экран с подробной информацией
-        Intent(this, MovieDescription::class.java).apply {
-            putExtra(MovieDescription.MOVIE_DATA, data)
-            startActivity(this)
-        }
-    }
+    private val movieRepository = getRepository()
 
     private fun initRecycler() {
         val orientation = when (resources.configuration.orientation) {
@@ -39,12 +25,21 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView.adapter =
             MovieAdapter(
-                movieRepository.getAll(),
-                movieRepository.getFavorite(),
+                movieRepository,
                 object : MovieAdapter.DetailsClickListener {
-                    override fun onDetailsClick(movieItem: MovieData) = showDetail(movieItem)
-                    override fun onFavoriteClick(movieItem: MovieData, position: Int) {
-                        movieRepository.addToFavorite(movieItem.title)
+                    override fun onDetailsClick(movieItem: MovieData) =
+                        showDetail(this@MainActivity, movieItem)
+
+                    override fun onFavoriteClick(
+                        movieItem: MovieData,
+                        added: Boolean,
+                        position: Int
+                    ) {
+                        if (added) {
+                            movieRepository.addToFavorite(movieItem.title)
+                        } else {
+                            movieRepository.removeFromFavorite(movieItem.title)
+                        }
                         recyclerView.adapter?.notifyItemChanged(position)
                     }
                 })
@@ -64,18 +59,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        intent.getIntArrayExtra(EXTRA_FAVORITES)?.let {
-            Log.i(tag, "restoring favorites")
-            movieRepository.setFavorite(it.toSet())
-        }
-
         initRecycler()
+
+        findViewById<View>(R.id.openFavorites).setOnClickListener {
+            Intent(this, Favorites::class.java).apply {
+                startActivityForResult(this, 0)
+            }
+        }
     }
 
-    override fun onStop() {
-        Log.i(tag, "saving favorites")
-        val toTypedArray = movieRepository.getFavorite().toIntArray()
-        intent.putExtra(EXTRA_FAVORITES, toTypedArray)
-        super.onStop()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.i(tag, "refreshing list")
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }

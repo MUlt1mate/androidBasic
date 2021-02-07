@@ -1,21 +1,19 @@
 <resources>
     <string name="app_name">MovieList</string>
-
     <string name="darkKnightTitle">Dark Knight</string>
     <string name="darkKnightDescription">When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.</string>
     <string name="quietPlaceTitle">A Quiet Place Part II</string>
     <string name="quietPlaceDescription">Following the events at home, the Abbott family now face the terrors of the outside world. Forced to venture into the unknown, they realize the creatures that hunt by sound are not the only threats lurking beyond the sand path.</string>
     <string name="furious9Title">F9</string>
     <string name="furious9Description">Cypher enlists the help of Jakob, Dom\'s younger brother to take revenge on Dom and his team.</string>
+    <string name="tenetTitle">Tenet</string>
+    <string name="tenetDescription">Armed with only one word, Tenet, and fighting for the survival of the entire world, a Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time.</string>
     <string name="details">Details</string>
     <string name="addToFavorite">Add to favorite</string>
     <string name="inFavorite">Favorite</string>
-    <string name="posterDescription">description</string>
-    <string name="share">Share</string>
-    <string name="like">Like</string>
-    <string name="comment">Comment</string>
     <string name="exitQuestion">Do you want to exit?</string>
     <string name="confirmation">Confirmation</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="favorites">Favorites</string>
 </resources>

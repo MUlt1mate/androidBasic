@@ -1,5 +1,7 @@
 package com.example.otusandroidbasic
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -30,3 +32,11 @@ class MovieDescription : AppCompatActivity() {
     }
 }
 
+// обработка выбора фильма из списка
+fun showDetail(context: Context, data: MovieData) {
+    // открываем экран с подробной информацией
+    Intent(context, MovieDescription::class.java).apply {
+        putExtra(MovieDescription.MOVIE_DATA, data)
+        context.startActivity(this)
+    }
+}
