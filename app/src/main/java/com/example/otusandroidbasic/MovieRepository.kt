@@ -1,6 +1,7 @@
 package com.example.otusandroidbasic
 
 class MovieRepository {
+    private var favList = mutableSetOf<Int>()
     private val movieList = listOf(
         MovieData(
             R.string.darkKnightTitle,
@@ -21,4 +22,12 @@ class MovieRepository {
 
     fun getAll(): List<MovieData> = movieList
     fun getByTitle(titleRes: Int): MovieData = movieList.first { it.title == titleRes }
+    fun addToFavorite(movie: Int) {
+        favList.add(movie)
+    }
+
+    fun getFavorite(): Set<Int> = favList
+    fun setFavorite(set: Set<Int>) {
+        favList = set.toMutableSet()
+    }
 }

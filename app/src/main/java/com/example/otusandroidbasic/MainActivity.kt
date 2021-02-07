@@ -1,10 +1,8 @@
 package com.example.otusandroidbasic
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,23 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.movieList) }
+    private val movieRepository = MovieRepository()
 
     companion object {
-        const val SELECTED_TITLE = "SELECTED_TITLE"
-        const val SELECTED_TITLE_COLOR = "#B33C3C"
-        const val DEFAULT_TITLE_COLOR = "#323232"
-    }
-
-    // устанавливает цвет TextView
-    private fun setTextColor(elementId: Int, color: String) {
-        findViewById<TextView>(elementId)?.setTextColor(Color.parseColor(color))
+        const val EXTRA_FAVORITES = "EXTRA_FAVORITES"
     }
 
     // обработка выбора фильма из списка
     private fun showDetail(data: MovieData) {
         Log.i(tag, "click on movie ${data.title}")
 
-//        changeLastSelectedMovie(data)
         // открываем экран с подробной информацией
         Intent(this, MovieDescription::class.java).apply {
             putExtra(MovieDescription.MOVIE_DATA, data)
@@ -36,24 +27,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeLastSelectedMovie(data: MovieData) {
-        // снимаем выделение с предыдущего выбранного фильма, если был
-        intent.getIntExtra(SELECTED_TITLE, 0)?.let {
-            Log.i(tag, "disable selected title: $it")
-            setTextColor(it, DEFAULT_TITLE_COLOR)
-        }
-        // выделяем и запоминаем новый фильм
-        setTextColor(data.title, SELECTED_TITLE_COLOR)
-        intent.putExtra(SELECTED_TITLE, data.title)
-    }
-
     private fun initRecycler() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recyclerView.layoutManager = layoutManager
+
         recyclerView.adapter =
-            MovieAdapter(MovieRepository().getAll(), object : MovieAdapter.DetailsClickListener {
-                override fun onDetailsClick(movieItem: MovieData) = showDetail(movieItem)
-            })
+            MovieAdapter(
+                movieRepository.getAll(),
+                movieRepository.getFavorite(),
+                object : MovieAdapter.DetailsClickListener {
+                    override fun onDetailsClick(movieItem: MovieData) = showDetail(movieItem)
+                    override fun onFavoriteClick(movieItem: MovieData, position: Int) {
+                        movieRepository.addToFavorite(movieItem.title)
+                        recyclerView.adapter?.notifyItemChanged(position)
+                    }
+                })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,15 +49,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Log.i(tag, "created")
 
-        initRecycler()
+        intent.getIntArrayExtra(EXTRA_FAVORITES)?.let {
+            Log.i(tag, "restoring favorites")
+            movieRepository.setFavorite(it.toSet())
+        }
 
-//        markLastSelectedMovie()
+        initRecycler()
     }
 
-    private fun markLastSelectedMovie() {
-        intent.getIntExtra(SELECTED_TITLE, 0)?.let {
-            Log.i(tag, "found selected title: $it")
-            setTextColor(it, SELECTED_TITLE_COLOR)
-        }
+    override fun onStop() {
+        Log.i(tag, "saving favorites")
+        val toTypedArray = movieRepository.getFavorite().toIntArray()
+        intent.putExtra(EXTRA_FAVORITES, toTypedArray)
+        super.onStop()
     }
 }

@@ -27,6 +27,14 @@
         tools:text="@tools:sample/lorem" />
 
     <Button
+        android:id="@+id/markFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/addToFavorite"
+        app:layout_constraintStart_toEndOf="@+id/posterImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/movieButton" />
+    <Button
         android:id="@+id/movieButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

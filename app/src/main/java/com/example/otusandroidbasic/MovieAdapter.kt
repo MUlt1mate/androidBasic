@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MovieAdapter(
     private val items: List<MovieData>,
+    private val favorites: Set<Int>,
     private val clickListener: DetailsClickListener
 ) : RecyclerView.Adapter<MovieVH>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieVH {
@@ -18,13 +19,18 @@ class MovieAdapter(
 
     override fun onBindViewHolder(holder: MovieVH, position: Int) {
         val item = items[position]
-        holder.bind(item)
+        holder.bind(item, favorites.contains(item.title))
         holder.detailsButton.setOnClickListener {
             clickListener.onDetailsClick(item)
+        }
+        holder.markFavoriteButton.setOnClickListener {
+            holder.changeFavorite()
+            clickListener.onFavoriteClick(item, position)
         }
     }
 
     interface DetailsClickListener {
         fun onDetailsClick(movieItem: MovieData)
+        fun onFavoriteClick(movieItem: MovieData, position: Int)
     }
 }
