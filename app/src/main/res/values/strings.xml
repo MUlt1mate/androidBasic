@@ -14,4 +14,8 @@
     <string name="share">Share</string>
     <string name="like">Like</string>
     <string name="comment">Comment</string>
+    <string name="exitQuestion">Do you want to exit?</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
