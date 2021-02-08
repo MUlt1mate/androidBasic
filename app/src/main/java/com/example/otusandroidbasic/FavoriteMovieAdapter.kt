@@ -11,5 +11,4 @@ class FavoriteMovieAdapter(
         val items = movieRepository.getAll().filter { favoriteMovies.contains(it.title) }
         bindVH(holder, items[position], true, position)
     }
-
 }

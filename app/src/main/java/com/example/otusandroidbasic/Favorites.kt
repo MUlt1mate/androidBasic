@@ -38,7 +38,7 @@ class Favorites : AppCompatActivity() {
                         position: Int
                     ) {
                         movieRepository.removeFromFavorite(movieItem.title)
-                        recyclerView.adapter?.notifyItemRemoved(position)
+                        recyclerView.adapter?.notifyDataSetChanged()
                     }
                 })
     }

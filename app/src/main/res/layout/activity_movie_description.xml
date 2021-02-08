@@ -44,6 +44,11 @@
                 android:textSize="20sp"
                 tools:text="@tools:sample/lorem" />
 
+            <Button
+                android:id="@+id/shareBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/share" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
