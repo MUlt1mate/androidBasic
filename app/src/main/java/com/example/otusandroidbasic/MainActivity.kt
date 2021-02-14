@@ -1,95 +1,91 @@
 package com.example.otusandroidbasic
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
     private val tag = "MainActivity"
-    private val requestCodeDescription = 1
+    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.movieList) }
+    private val movieRepository = getRepository()
 
-    companion object {
-        const val SELECTED_TITLE = "SELECTED_TITLE"
-        const val SELECTED_TITLE_COLOR = "#B33C3C"
-        const val DEFAULT_TITLE_COLOR = "#323232"
+    private fun initRecycler() {
+        val orientation = when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> LinearLayoutManager.HORIZONTAL
+            else -> LinearLayoutManager.VERTICAL
+        }
+        val layoutManager = LinearLayoutManager(this, orientation, false)
+        recyclerView.layoutManager = layoutManager
+
+        recyclerView.adapter =
+            MovieAdapter(
+                movieRepository,
+                object : MovieAdapter.DetailsClickListener {
+                    override fun onDetailsClick(movieItem: MovieData) =
+                        showDetail(this@MainActivity, movieItem)
+
+                    override fun onFavoriteClick(
+                        movieItem: MovieData,
+                        added: Boolean,
+                        position: Int
+                    ) {
+                        if (added) {
+                            movieRepository.addToFavorite(movieItem.title)
+                        } else {
+                            movieRepository.removeFromFavorite(movieItem.title)
+                        }
+                        recyclerView.adapter?.notifyItemChanged(position)
+                    }
+                })
+        addDecorations(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
     }
 
-    // устанавливает цвет TextView
-    private fun setTextColor(elementId: String, color: String) {
-        val id = this.resources.getIdentifier(elementId, "id", this.packageName)
-        findViewById<TextView>(id)?.setTextColor(Color.parseColor(color))
+    private fun addDecorations(isVertical: Boolean) {
+        val orientation: Int = if (isVertical) {
+            DividerItemDecoration.VERTICAL
+        } else {
+            DividerItemDecoration.HORIZONTAL
+        }
+
+        val itemDecoration = DividerItemDecoration(this, orientation)
+        itemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_list)!!)
+        recyclerView.addItemDecoration(itemDecoration)
     }
 
-    // обработка выбора фильма из списка
-    private fun showDetail(data: MovieData, titleId: String) {
-        Log.i(tag, "click on movie ${data.title}")
-        // снимаем выделение с предыдущего выбранного фильма, если был
-        intent.getStringExtra(SELECTED_TITLE)?.let {
-            Log.i(tag, "disable selected title: $it")
-            setTextColor(it, DEFAULT_TITLE_COLOR)
-        }
-        // выделяем и запоминаем новый фильм
-        setTextColor(titleId, SELECTED_TITLE_COLOR)
-        intent.putExtra(SELECTED_TITLE, titleId)
-        // открываем экран с подробной информацией
-        Intent(this, MovieDescription::class.java).apply {
-            putExtra(MovieDescription.MOVIE_DATA, data)
-            startActivityForResult(this, requestCodeDescription)
-        }
+    override fun onBackPressed() {
+        val bld: AlertDialog.Builder = AlertDialog.Builder(this)
+            .setMessage(R.string.exitQuestion)
+            .setTitle(R.string.confirmation)
+            .setPositiveButton(R.string.yes) { _, _ -> super.onBackPressed() }
+            .setNegativeButton(R.string.no) { dialog, _ -> dialog.dismiss() }
+
+        bld.create().show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.i(tag, "created")
 
-        intent.getStringExtra(SELECTED_TITLE)?.let {
-            Log.i(tag, "found selected title: $it")
-            setTextColor(it, SELECTED_TITLE_COLOR)
-        }
+        initRecycler()
 
-        findViewById<View>(R.id.movieButton1).setOnClickListener {
-            showDetail(
-                MovieData(
-                    "@string/darkKnightTitle",
-                    "@drawable/batman6_23s",
-                    "@string/darkKnightDescription"
-                ), "@posterTitle1"
-            )
-        }
-        findViewById<View>(R.id.movieButton2).setOnClickListener {
-            showDetail(
-                MovieData(
-                    "@string/quietPlaceTitle",
-                    "@drawable/quietplace2_10s",
-                    "@string/quietPlaceDescription"
-                ), "@posterTitle2"
-            )
-        }
-        findViewById<View>(R.id.movieButton3).setOnClickListener {
-            showDetail(
-                MovieData(
-                    "@string/furious9Title",
-                    "@drawable/furious9_12s",
-                    "@string/furious9Description"
-                ), "@posterTitle3"
-            )
+        findViewById<View>(R.id.openFavorites).setOnClickListener {
+            Intent(this, Favorites::class.java).apply {
+                startActivityForResult(this, 0)
+            }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == requestCodeDescription && resultCode == Activity.RESULT_OK) {
-            Log.i(tag, "received description result")
-            data?.getParcelableExtra<FeedbackData>(MovieDescription.FEEDBACK_DATA)?.let {
-                Log.i(tag, "received comment ${it.comment}")
-                Log.i(tag, "like ${it.like}")
-            }
-        }
+        Log.i(tag, "refreshing list")
+        recyclerView.adapter?.notifyDataSetChanged()
     }
 }

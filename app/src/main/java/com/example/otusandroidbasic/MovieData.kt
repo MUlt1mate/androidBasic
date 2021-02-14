@@ -5,5 +5,5 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 // подробная информация о фильме
-class MovieData(val title: String, val img: String, val description: String) : Parcelable {
+class MovieData(val title: Int, val img: Int, val description: Int) : Parcelable {
 }
