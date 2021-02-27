@@ -1,66 +1,15 @@
 package com.example.otusandroidbasic
 
 import android.app.AlertDialog
-import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
-    private val tag = "MainActivity"
-    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.movieList) }
-    private val movieRepository = getRepository()
-
-    private fun initRecycler() {
-        val orientation = when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_LANDSCAPE -> LinearLayoutManager.HORIZONTAL
-            else -> LinearLayoutManager.VERTICAL
-        }
-        val layoutManager = LinearLayoutManager(this, orientation, false)
-        recyclerView.layoutManager = layoutManager
-
-        recyclerView.adapter =
-            MovieAdapter(
-                movieRepository,
-                object : MovieAdapter.DetailsClickListener {
-                    override fun onDetailsClick(movieItem: MovieData) =
-                        showDetail(this@MainActivity, movieItem)
-
-                    override fun onFavoriteClick(
-                        movieItem: MovieData,
-                        added: Boolean,
-                        position: Int
-                    ) {
-                        if (added) {
-                            movieRepository.addToFavorite(movieItem.title)
-                        } else {
-                            movieRepository.removeFromFavorite(movieItem.title)
-                        }
-                        recyclerView.adapter?.notifyItemChanged(position)
-                    }
-                })
-        addDecorations(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-    }
-
-    private fun addDecorations(isVertical: Boolean) {
-        val orientation: Int = if (isVertical) {
-            DividerItemDecoration.VERTICAL
-        } else {
-            DividerItemDecoration.HORIZONTAL
-        }
-
-        val itemDecoration = DividerItemDecoration(this, orientation)
-        itemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_list)!!)
-        recyclerView.addItemDecoration(itemDecoration)
-    }
-
     override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+            return
+        }
         val bld: AlertDialog.Builder = AlertDialog.Builder(this)
             .setMessage(R.string.exitQuestion)
             .setTitle(R.string.confirmation)
@@ -74,18 +23,37 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initRecycler()
-
-        findViewById<View>(R.id.openFavorites).setOnClickListener {
-            Intent(this, Favorites::class.java).apply {
-                startActivityForResult(this, 0)
-            }
-        }
+        openMovieList()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.i(tag, "refreshing list")
-        recyclerView.adapter?.notifyDataSetChanged()
+    private fun openMovieList() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragmentContainer, MovieListFragment(), MovieListFragment.TAG)
+            .commit()
+    }
+
+    fun openFavoriteList() {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragmentContainer,
+                FavoriteMovieListFragment(),
+                FavoriteMovieListFragment.TAG
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun onDetailsClick(movieItem: MovieData) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fragmentContainer,
+                MovieDescriptionFragment.newInstance(movieItem),
+                MovieDescriptionFragment.TAG
+            )
+            .addToBackStack(null)
+            .commit()
     }
 }
